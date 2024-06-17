@@ -1,0 +1,88 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f8f9fa;
+  }
+  .navbar-custom {
+    background-color: #0d3acf; 
+  }
+.nav-link {
+    color: #ffffff;
+  }
+.logo{
+    width: 150px;
+}
+
+  .main-content {
+    padding: 20px;
+    min-height: 84.6vh;
+  }
+
+.carousel{
+  height: 400px;
+}
+.carousel-item{
+  height: 400px;
+}
+
+.carousel-inner{
+  height: 100%;
+  width: 100%;
+  object-fit: fill;
+}
+
+.carousel-caption h5{
+  font-size: 120px;
+}
+
+  .card-custom {
+    background-color: #dcf0f7;
+    border: 1px solid #ffa834;
+  }
+
+  .card-title, .card-text {
+    color: #333333;
+  }
+  .footer-custom {
+    background-color: #ffc300;
+    padding: 10px;
+    text-align: center;
+    
+  }
+  .footer-custom a {
+    margin-right: 10px;
+  }
+
+  .form-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+  }
+
+  .event-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+  }
+  .event-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  .event-details {
+    padding-left: 10px;
+  }
