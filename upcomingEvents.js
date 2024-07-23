@@ -196,27 +196,81 @@ const data = {
   };
 
 
-for (let i = 0; i < data.events.length; i++) {
+let arrayfilterDate = data.events.filter(e => e.date > data.currentDate)
 
-    if (data.events[i].date > data.currentDate) {
-        let cardsContaner = document.getElementById('containerCards')
-            cardsContaner.innerHTML += `
+
+  let todasLasCategorias = data.events.map(evento => evento.category)
+  let categoriasFiltradas = [... new Set(todasLasCategorias)]
+  
+  
+  for (let j = 0; j < categoriasFiltradas.length; j++) {
+    let checksContainer = document.getElementById("check-box")
+    checksContainer.innerHTML += `
+      <div class="form-check form-check-inline">
+        <input class="form-check-input checkBoxs" type="checkbox" id="${data.events[j]._id}" value="${categoriasFiltradas[j]}" name="${categoriasFiltradas[j]}">
+        <label class="form-check-label" for="${categoriasFiltradas[j]}">${categoriasFiltradas[j]}</label>
+      </div>
+    `
+  };
+  
+  
+  function filtrarCheckBoxs() {
+    let checkBoxsAgregados = Array.from(document.querySelectorAll(".checkBoxs:checked")).map(category => category.value)
+    let searchFilter = document.getElementById('search').value.toLowerCase()
+  
+  
+    let filtroEventos = arrayfilterDate.filter(event => {
+      let checkBoxcheckCategory = checkBoxsAgregados.includes(event.category) || checkBoxsAgregados.length === 0
+      let search = event.name.toLowerCase().includes(searchFilter)
+      
+      return checkBoxcheckCategory && search
+    })
+      renderCards(filtroEventos)
+    
+  }
+  
+  
+  
+  function renderCards(arrayEvents){
+  
+    let cardsContaner = document.getElementById('containerCards')
+    cardsContaner.innerHTML = ""
+  
+    if (arrayEvents.length == 0) {
+      cardsContaner.innerHTML = `
+        <div class="col-12 text-center">
+          <p>No se encontraron resultados para su búsqueda.</p>
+        </div>
+      `
+    }else{
+      for (let i = 0; i < arrayEvents.length; i++) {
+        if (data.events[i].date > data.currentDate) {
+          cardsContaner.innerHTML += `
                 <div class="col-md-3">
                     <div class="card card-custom">
-                    <img src="${data.events[i].image}" class="card-img-top" alt="${data.events[i].name}">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">${data.events[i].name}</h5>
-                     <p class="card-text">${data.events[i].description}</p>
+                      <img src="${arrayEvents[i].image}" class="card-img-top" alt="${arrayEvents[i].name}">
+                      <div class="card-body text-center">
+                        <h5 class="card-title">${arrayEvents[i].name}</h5>
+                        <p class="card-text">${arrayEvents[i].description}</p>
                         <div class="row d-flex justify-content-around">
-                            <p class="card-text">${data.events[i].price}</p>
-                            <a href="./details.html" class="btn btn-dark">Details</a>
+                            <p class="card-text">${arrayEvents[i].price}</p>
+                            <a href="./details.html?id=${arrayEvents[i]._id}" class="btn btn-dark">Details</a>
                         </div>
-                    </div>
+                      </div>
                     </div>
                 </div>
         `
-        
+        }
     }
-
+    }
+  
+  
     
-}
+  
+  }
+  document.querySelectorAll(".checkBoxs").forEach(checkBox => {
+    checkBox.addEventListener('change' ,filtrarCheckBoxs)
+  })
+  document.getElementById('search').addEventListener('keyup', filtrarCheckBoxs)
+  renderCards(data.events)
+  

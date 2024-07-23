@@ -1,3 +1,5 @@
+const urlParams = new URLSearchParams(window.location.search)
+const eventId = urlParams.get('id')
 
 
 const data = {
@@ -197,91 +199,23 @@ const data = {
     ],
   };
 
-const noResults = [
- { _id: "0",
-  name: "",
-  image: "",
-  date: "",
-  description:
-    "No se encontraro resultados",
-  category: "",
-  place: "Room A",
-  capacity: 45000,
-  assistance: 42756,
-  price: "",
-  __v: 0,}
-]
 
-let todasLasCategorias = data.events.map(evento => evento.category)
-let categoriasFiltradas = [... new Set(todasLasCategorias)]
+let container = document.getElementById('container')
 
-
-for (let j = 0; j < categoriasFiltradas.length; j++) {
-  let checksContainer = document.getElementById("check-box")
-  checksContainer.innerHTML += `
-    <div class="form-check form-check-inline">
-      <input class="form-check-input checkBoxs" type="checkbox" id="${data.events[j]._id}" value="${categoriasFiltradas[j]}" name="${categoriasFiltradas[j]}">
-      <label class="form-check-label" for="${categoriasFiltradas[j]}">${categoriasFiltradas[j]}</label>
-    </div>
-  `
-  console.log(data.events[j]._id);
-};
-
-
-function filtrarCheckBoxs() {
-  let checkBoxsAgregados = Array.from(document.querySelectorAll(".checkBoxs:checked")).map(category => category.value)
-  let searchFilter = document.getElementById('search').value.toLowerCase()
-
-
-  let filtroEventos = data.events.filter(event => {
-    let checkBoxcheckCategory = checkBoxsAgregados.includes(event.category) || checkBoxsAgregados.length === 0
-    let search = event.name.toLowerCase().includes(searchFilter)
-    
-    return checkBoxcheckCategory && search
-  })
-    renderCards(filtroEventos)
-  
-}
-
-
-
-function renderCards(arrayEvents){
-
-  let cardsContaner = document.getElementById('containerCards')
-  cardsContaner.innerHTML = ""
-
-  if (arrayEvents.length == 0) {
-    cardsContaner.innerHTML = `
-      <div class="col-12 text-center">
-        <p>No se encontraron resultados para su búsqueda.</p>
-      </div>
-    `
-  }else{
-    for (let i = 0; i < arrayEvents.length; i++) {
-      cardsContaner.innerHTML += `
-              <div class="col-md-3">
-                  <div class="card card-custom">
-                    <img src="${arrayEvents[i].image}" class="card-img-top" alt="${arrayEvents[i].name}">
-                    <div class="card-body text-center">
-                      <h5 class="card-title">${arrayEvents[i].name}</h5>
-                      <p class="card-text">${arrayEvents[i].description}</p>
-                      <div class="row d-flex justify-content-around">
-                          <p class="card-text">${arrayEvents[i].price}</p>
-                          <a href="./details.html?id=${arrayEvents[i]._id}" class="btn btn-dark">Details</a>
-                      </div>
-                    </div>
-                  </div>
+let evento = data.events.find(e => e._id === eventId)
+console.log(eventId);
+container.innerHTML += `
+  <div class="event-card">
+                <div class="col-md-6">
+                  <img src="${evento.image}" alt="costumer party">
+                </div>
+                <div class="event-details">
+                  <h3>${evento.name}</h3>
+                  <p>${evento.description}</p>
+                  <p>Date: ${evento.date}</p>
+                  <p>Pice: ${evento.price}</p>
+                  <p>Place: ${evento.price}</p>
+                </div>
               </div>
-      `
-  }
-  }
 
-
-  
-
-}
-document.querySelectorAll(".checkBoxs").forEach(checkBox => {
-  checkBox.addEventListener('change' ,filtrarCheckBoxs)
-})
-document.getElementById('search').addEventListener('keyup', filtrarCheckBoxs)
-renderCards(data.events)
+`
